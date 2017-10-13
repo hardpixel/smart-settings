@@ -4,7 +4,7 @@ Stores and retrieves settings on an ActiveRecord class, with support for applica
 
 [![Gem Version](https://badge.fury.io/rb/smart_settings.svg)](https://badge.fury.io/rb/smart_settings)
 [![Build Status](https://travis-ci.org/hardpixel/smart-settings.svg?branch=master)](https://travis-ci.org/hardpixel/smart-settings)
-[![Code Climate](https://codeclimate.com/github/hardpixel/smart-settings/badges/gpa.png)](https://codeclimate.com/github/hardpixel/smart-settings)
+[![Maintainability](https://api.codeclimate.com/v1/badges/930d42bb2bf6f54a4268/maintainability)](https://codeclimate.com/github/hardpixel/smart-settings/maintainability)
 
 ## Installation
 
