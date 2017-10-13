@@ -1,13 +1,13 @@
 class Create<%= template.capitalize %>Settings < ActiveRecord::Migration[5.0]
   def change
     create_table :<%= template %>_settings do |t|
-      t.string   :var
-      t.string   :value
+      t.string  :var
+      t.string  :value
       <%- if template == 'global' -%>
-      t.string   :group
+      t.string  :group
       <%- else -%>
-      t.integer  :settable_id
-      t.string   :settable_type
+      t.integer :settable_id
+      t.string  :settable_type
       <%- end -%>
 
       t.timestamps
