@@ -1,6 +1,6 @@
 # SmartSettings
 
-Stores and retrieves settings on an ActiveRecord class, with support for application and per record settings. 
+Stores and retrieves settings on an ActiveRecord class, with support for application and per record settings.
 
 [![Gem Version](https://badge.fury.io/rb/smart_settings.svg)](https://badge.fury.io/rb/smart_settings)
 [![Build Status](https://travis-ci.org/hardpixel/smart-settings.svg?branch=master)](https://travis-ci.org/hardpixel/smart-settings)
