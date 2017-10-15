@@ -10,12 +10,9 @@ module SmartSettings
 
     desc 'Generates migrations to add settings tables.'
     source_root File.expand_path('../templates', __FILE__)
-    class_option :global, type: :boolean, default: false, desc: 'Add global settings table.'
-    class_option :scoped, type: :boolean, default: false, desc: 'Add scoped settings table.'
 
     def create_migration_file
-      migration_template 'global.rb', 'db/migrate/create_global_settings.rb' if options.global?
-      migration_template 'scoped.rb', 'db/migrate/create_scoped_settings.rb' if options.scoped?
+      migration_template 'migration.rb', 'db/migrate/create_settings.rb'
     end
 
     def self.next_migration_number(dirname)
