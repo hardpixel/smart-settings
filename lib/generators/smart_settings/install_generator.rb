@@ -6,8 +6,6 @@ module SmartSettings
   class InstallGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
 
-    attr_accessor :template
-
     desc 'Generates migrations to add settings tables.'
     source_root File.expand_path('../templates', __FILE__)
 
