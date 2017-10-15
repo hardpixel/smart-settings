@@ -14,19 +14,12 @@ module SmartSettings
     class_option :scoped, type: :boolean, default: false, desc: 'Add scoped settings table.'
 
     def create_migration_file
-      add_smart_settings_migration('global') if options.global?
-      add_smart_settings_migration('scoped') if options.scoped?
+      migration_template 'global.rb', 'db/migrate/create_global_settings.rb' if options.global?
+      migration_template 'scoped.rb', 'db/migrate/create_scoped_settings.rb' if options.scoped?
     end
 
     def self.next_migration_number(dirname)
       ::ActiveRecord::Generators::Base.next_migration_number(dirname)
     end
-
-    protected
-
-      def add_smart_settings_migration(template)
-        @template = template
-        migration_template 'migration.rb', "db/migrate/create_#{template}_settings.rb"
-      end
   end
 end
