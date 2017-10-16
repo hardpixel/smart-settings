@@ -2,24 +2,22 @@ module SmartSettings
   module NoTable
     extend ActiveSupport::Concern
 
-    class DummySchemaCache
+    class SchemaCache
       def columns_hash(table_name); {} end
       def data_source_exists?(table_name); false end
       def clear_data_source_cache!(table_name); true end
     end
 
-    class DummyConnection < ActiveRecord::ConnectionAdapters::AbstractAdapter
-      attr_reader :schema_cache
-
+    class Connection < ActiveRecord::ConnectionAdapters::AbstractAdapter
       def initialize(*)
         super
-        @schema_cache = DummySchemaCache.new
+        @schema_cache = SchemaCache.new
       end
     end
 
     module ClassMethods
       def connection
-        @connection ||= DummyConnection.new(nil)
+        @connection ||= Connection.new nil
       end
 
       def destroy(*); new.destroy end
