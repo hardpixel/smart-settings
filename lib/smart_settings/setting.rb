@@ -1,7 +1,7 @@
-require_relative 'no_table'
+require 'tableless'
 
 module SmartSettings
   class Setting < ActiveRecord::Base
-    include SmartSettings::NoTable
+    include Tableless
   end
 end
