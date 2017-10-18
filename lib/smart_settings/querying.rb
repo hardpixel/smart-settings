@@ -7,18 +7,23 @@ module SmartSettings
         "#{name}_settings".camelize
       end
 
-      def find(name)
-        name.is_a?(Array) ? where(name: name) : find_by_name!(name)
+      def find(*name)
+        if name.size > 1
+          results = where(name: name)
+          raise_record_not_found_exception!(name) if results.blank?
+        else
+          find_by_name!(name.first)
+        end
       end
 
       def find_by_name(name)
         setting = setting_class(name).safe_constantize
-        setting.new unless setting.nil?
+        setting.nil? ? nil : setting.new
       end
 
       def find_by_name!(name)
-        setting = find_by_name(method)
-        raise ActiveRecord::RecordNotFound if setting.nil?
+        setting = find_by_name(name)
+        setting.nil? ? raise_record_not_found_exception!(name) : setting
       end
 
       def where(options={})
@@ -40,6 +45,15 @@ module SmartSettings
         setting = find_by_name(method)
         setting.nil? ? super : setting
       end
+
+      private
+
+        def raise_record_not_found_exception!(ids)
+          names = ids.is_a?(Array) ? "(#{ids.join(', ')})" : ids
+          error = "Couldn't find Settings with name: #{names}"
+
+          raise ActiveRecord::RecordNotFound.new(error, 'Settings', 'name')
+        end
     end
   end
 end
