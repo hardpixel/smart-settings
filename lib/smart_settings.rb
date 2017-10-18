@@ -4,5 +4,4 @@ require 'smart_settings/setting'
 require 'smart_settings/models/setting'
 
 module SmartSettings
-  include SmartSettings::Querying
 end
