@@ -8,13 +8,17 @@ module SmartSettings
       end
 
       def find(name)
-        name.is_a?(Array) ? where(name: name) : find!(name)
+        name.is_a?(Array) ? where(name: name) : find_by_name!(name)
       end
 
-      def find!(name)
-        setting_class(name).constantize.new
-      rescue
-        ActiveRecord::RecordNotFound
+      def find_by_name(name)
+        setting = setting_class(name).safe_constantize
+        setting.new unless setting.nil?
+      end
+
+      def find_by_name!(name)
+        setting = find_by_name(method)
+        raise ActiveRecord::RecordNotFound if setting.nil?
       end
 
       def where(options={})
@@ -33,8 +37,8 @@ module SmartSettings
       end
 
       def method_missing(method, *args, &block)
-        setting = setting_class(method).safe_constantize
-        setting.nil? ? super : setting.new
+        setting = find_by_name(method)
+        setting.nil? ? super : setting
       end
     end
   end
