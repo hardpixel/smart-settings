@@ -5,5 +5,6 @@ module SmartSettings
     include Tableless
     include SmartSettings::Naming
     include SmartSettings::Querying
+    include SmartSettings::Persistence
   end
 end
