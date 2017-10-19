@@ -10,6 +10,10 @@ module SmartSettings
       def model_name
         ActiveModel::Name.new(Setting, nil, 'Setting')
       end
+
+      def permitted_attributes
+        attribute_names
+      end
     end
 
     def var
@@ -18,6 +22,10 @@ module SmartSettings
 
     def to_param
       "#{var}".parameterize
+    end
+
+    def permitted_attributes
+      attribute_names - ['var']
     end
   end
 end
