@@ -13,7 +13,7 @@ module SmartSettings
     end
 
     def var
-      self.class.name.sub('Settings', '')
+      "#{self.class.name}".demodulize.sub('Settings', '')
     end
 
     def to_param
