@@ -3,7 +3,7 @@ module SmartSettings
     extend ActiveSupport::Concern
 
     included do
-      attribute :name, :string
+      attribute :var, :string
     end
 
     class_methods do
@@ -12,12 +12,12 @@ module SmartSettings
       end
     end
 
-    def name
+    def var
       self.class.name.sub('Settings', '')
     end
 
     def to_param
-      "#{name}".parameterize
+      "#{var}".parameterize
     end
   end
 end
