@@ -15,8 +15,8 @@ module SmartSettings
       end
 
       before_update do
-        changed_attributes.each do |var, value|
-          create_or_update_setting(var, value)
+        changes_to_save.each do |var, value|
+          create_or_update_setting(var, value.last)
         end
       end
 
