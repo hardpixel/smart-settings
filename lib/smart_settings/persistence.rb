@@ -5,10 +5,11 @@ module SmartSettings
     included do
       after_initialize do
         settings.each do |setting|
-          var, value = [setting.var, setting.value]
-          send(:"#{var}=", cast_value(var, value))
+          svar, value = [setting.var, setting.value]
+          send(:"#{svar}=", cast_value(svar, value))
         end
 
+        self.var = var
         save
       end
 
