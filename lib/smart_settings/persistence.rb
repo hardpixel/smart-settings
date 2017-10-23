@@ -4,19 +4,18 @@ module SmartSettings
 
     included do
       after_initialize do
+        self.var = var
+
         settings.each do |setting|
           svar, value = [setting.var, setting.value]
-          send(:"#{svar}=", cast_value(svar, value))
+          send(:"#{svar}=", cast_setting_value(svar, value))
         end
 
-        self.var = var
-        save
+        self.save
       end
 
       before_update do
-        updated = attributes.select { |k, _v| attribute_changed? k }
-
-        updated.each do |var, value|
+        changed_attributes.each do |var, value|
           create_or_update_setting(var, value)
         end
       end
@@ -27,28 +26,26 @@ module SmartSettings
     end
 
     def settings
-      SmartSettings::Models::Setting.where(settable_type: self.class.name)
+      Models::Setting.where(settable_type: self.class.name)
     end
 
     private
 
-      def cast_value(var, value)
+      def cast_setting_value(var, value)
         self.class.attribute_types[var].cast(value)
       end
 
       def create_setting(var, value)
-        parameters = { settable_type: self.class.name, var: var, value: cast_value(var, value) }
-        SmartSettings::Models::Setting.create(parameters)
+        parameters = { var: var, value: cast_setting_value(var, value) }
+        Models::Setting.create(parameters.merge(settable_type: self.class.name))
       end
 
       def update_setting(var, value)
-        settings.where(var: var).update(value: cast_value(var, value))
+        settings.where(var: var).update(value: cast_setting_value(var, value))
       end
 
       def create_or_update_setting(var, value)
-        setting = settings.where(var: var)
-
-        if setting.exists?
+        if settings.where(var: var).exists?
           update_setting(var, value)
         else
           create_setting(var, value)
