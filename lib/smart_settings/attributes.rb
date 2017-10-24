@@ -23,6 +23,10 @@ module SmartSettings
           self.setting_groups = setting_groups.merge(gname => group)
         end
       end
+
+      def method_missing(method, *args, &block)
+        setting_names.any? ? new.send(method, *args, &block) : super
+      end
     end
 
     def all

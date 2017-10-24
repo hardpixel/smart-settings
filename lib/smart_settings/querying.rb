@@ -35,10 +35,14 @@ module SmartSettings
       end
 
       def all
-        files = Dir.glob(Rails.root.join('app', 'settings', '*.rb'))
-        files = files.map { |file| file.to_s.split('/').last.sub('_settings.rb', '') }
+        if setting_names.empty?
+          files = Dir.glob(Rails.root.join('app', 'settings', '*.rb'))
+          files = files.map { |file| file.to_s.split('/').last.sub('_settings.rb', '') }
 
-        where(var: files)
+          where(var: files)
+        else
+          new.all
+        end
       end
 
       def method_missing(method, *args, &block)
