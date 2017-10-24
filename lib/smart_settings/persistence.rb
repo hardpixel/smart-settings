@@ -26,7 +26,7 @@ module SmartSettings
     end
 
     def settings
-      Models::Setting.where(settable_type: self.class.name)
+      Setting.where(settable_type: self.class.name, settable_id: id)
     end
 
     private
@@ -37,7 +37,7 @@ module SmartSettings
 
       def create_setting(var, value)
         parameters = { var: var, value: cast_setting_value(var, value) }
-        Models::Setting.create(parameters.merge(settable_type: self.class.name))
+        Setting.create(parameters.merge(settable_type: self.class.name, settable_id: id))
       end
 
       def update_setting(var, value)
