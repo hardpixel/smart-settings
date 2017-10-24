@@ -22,6 +22,14 @@ Or install it yourself as:
 
     $ gem install smart_settings
 
+Then run the settings generator:
+
+    rails g smart_settings:install
+
+And finally run the migrations:
+
+    rails db:migrate
+
 ## Usage
 
 TODO: Write usage instructions here
