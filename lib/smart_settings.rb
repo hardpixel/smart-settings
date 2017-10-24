@@ -1,3 +1,4 @@
+require 'active_support'
 require 'smart_settings/version'
 require 'smart_settings/naming'
 require 'smart_settings/attributes'
