@@ -8,7 +8,7 @@ module SmartSettings
 
     class_methods do
       def model_name
-        ActiveModel::Name.new(Setting, nil, 'Setting')
+        ActiveModel::Name.new(self, nil, 'Setting')
       end
 
       def permitted_attributes
