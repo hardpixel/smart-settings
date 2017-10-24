@@ -14,13 +14,23 @@ module SmartSettings
       def setting(name, type_cast=:string, options={})
         gname = options.delete(:group)
         sname = gname.nil? ? name : :"#{gname}_#{name}"
-        group = setting_groups.fetch(gname, []) + [sname]
 
         attribute sname, type_cast, options
-
         self.setting_names += [sname]
-        self.setting_groups = setting_groups.merge(gname => group)
+
+        unless gname.nil?
+          group = setting_groups.fetch(gname, []) + [sname]
+          self.setting_groups = setting_groups.merge(gname => group)
+        end
       end
+    end
+
+    def all
+      except = setting_groups.values.flatten + [:var]
+      single = attributes.symbolize_keys.except(*except)
+      groups = Hash[setting_groups.keys.map { |s| [s, group(s)] }]
+
+      single.merge(groups)
     end
 
     def group_exists?(name)
