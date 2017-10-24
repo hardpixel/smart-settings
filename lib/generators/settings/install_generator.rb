@@ -10,6 +10,7 @@ module Settings
     source_root File.expand_path('../templates', __FILE__)
 
     def create_migration_file
+      template 'model.rb', 'app/models/setting.rb'
       migration_template 'migration.rb', 'db/migrate/create_settings.rb'
     end
 
