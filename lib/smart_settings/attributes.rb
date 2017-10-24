@@ -3,7 +3,10 @@ module SmartSettings
     extend ActiveSupport::Concern
 
     included do
+      class_attribute :setting_names
       class_attribute :setting_group_names
+
+      self.setting_names       = []
       self.setting_group_names = {}
     end
 
@@ -11,13 +14,12 @@ module SmartSettings
       def setting(name, type_cast=:string, options={})
         gname = options.delete(:group)
         sname = gname.nil? ? name : :"#{gname}_#{name}"
+        group = setting_group_names.fetch(gname, []) + [sname]
 
         attribute sname, type_cast, options
 
-        group = setting_group_names[gname] || []
-        value = group + [sname]
-
-        self.setting_group_names = setting_group_names.merge(gname => value)
+        self.setting_names      += sname
+        self.setting_group_names = setting_group_names.merge(gname => group)
       end
     end
 
