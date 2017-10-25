@@ -11,12 +11,16 @@ module SmartSettings
           send(:"#{svar}=", cast_setting_value(svar, value))
         end
 
+        @_suspend_save_callbacks = true
         self.save
+        @_suspend_save_callbacks = false
       end
 
-      before_update do
-        changes_to_save.each do |var, value|
-          create_or_update_setting(var, value.last)
+      before_save do
+        unless @_suspend_save_callbacks
+          changes_to_save.each do |var, value|
+            create_or_update_setting(var, value.last)
+          end
         end
       end
 
