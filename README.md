@@ -50,8 +50,11 @@ end
 Then you can use the `Setting` model or the `EmailSettings` class to get and set attributes:
 
 ```ruby
-# Get email settings using the Setting model
+# Get email settings using the Setting model querying
 email = Setting.find(:email)
+
+# Get email settings using the Setting model methods
+email = Setting.email
 
 # Get email settings using EmailSettings class
 email = EmailSettings
