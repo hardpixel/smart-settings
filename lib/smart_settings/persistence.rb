@@ -6,7 +6,7 @@ module SmartSettings
       after_initialize do
         self.var = var
 
-        settings.each do |setting|
+        settings.try(:each) do |setting|
           svar, value = [setting.var, setting.value]
           send(:"#{svar}=", cast_setting_value(svar, value))
         end
@@ -30,8 +30,10 @@ module SmartSettings
     end
 
     def settings
-      valid = self.attribute_names.reject { |i| i == 'var' }
-      Setting.where(settable_type: self.class.name, settable_id: id, var: valid)
+      if settings_table_exists?
+        valid = self.attribute_names.reject { |i| i == 'var' }
+        Setting.where(settable_type: self.class.name, settable_id: id, var: valid)
+      end
     end
 
     private
@@ -55,6 +57,10 @@ module SmartSettings
         else
           create_setting(var, value)
         end
+      end
+
+      def settings_table_exists?
+        ActiveRecord::Base.connection.table_exists? Setting.table_name
       end
   end
 end
