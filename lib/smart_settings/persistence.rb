@@ -30,7 +30,8 @@ module SmartSettings
     end
 
     def settings
-      Setting.where(settable_type: self.class.name, settable_id: id)
+      valid = self.attribute_names.reject { |i| i == 'var' }
+      Setting.where(settable_type: self.class.name, settable_id: id, var: valid)
     end
 
     private
