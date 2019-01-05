@@ -17,10 +17,10 @@ module SmartSettings
       end
 
       before_save do
-        return if @_suspend_save_callbacks
-
-        changes_to_save.each do |var, value|
-          create_or_update_setting(var, value.last)
+        unless @_suspend_save_callbacks
+          changes_to_save.each do |var, value|
+            create_or_update_setting(var, value.last)
+          end
         end
       end
 
