@@ -11,7 +11,7 @@ module SmartSettings
     end
 
     class_methods do
-      def setting(name, type_cast=:string, options={})
+      def setting(name, type_cast = :string, options = {})
         gname = options.delete(:group)
         sname = gname.nil? ? name : :"#{gname}_#{name}"
 
