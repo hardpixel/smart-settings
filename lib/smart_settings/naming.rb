@@ -17,11 +17,11 @@ module SmartSettings
     end
 
     def var
-      "#{self.class.name}".demodulize.sub('Settings', '')
+      self.class.name.to_s.demodulize.sub('Settings', '')
     end
 
     def to_param
-      "#{var}".parameterize
+      var.to_s.parameterize
     end
 
     def permitted_attributes

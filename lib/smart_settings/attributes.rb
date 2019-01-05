@@ -38,7 +38,7 @@ module SmartSettings
     end
 
     def group_exists?(name)
-      setting_groups.keys.include? name
+      setting_groups.key? name
     end
 
     def group(name)

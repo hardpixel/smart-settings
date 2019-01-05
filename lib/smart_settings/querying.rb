@@ -24,7 +24,7 @@ module SmartSettings
         setting.nil? ? raise_record_not_found_exception!(var) : setting
       end
 
-      def where(options={})
+      def where(options = {})
         vars = Hash[options][:var]
         return all if vars.nil?
 
