@@ -8,12 +8,10 @@ module SmartSettings
       end
 
       def find(*var)
-        if var.size > 1
-          results = where(var: var)
-          raise_record_not_found_exception!(var) if results.blank?
-        else
-          find_by_var!(var.first)
-        end
+        return find_by_var!(var.first) unless var.size > 1
+
+        results = where(var: var)
+        raise_record_not_found_exception!(var) if results.blank?
       end
 
       def find_by_var(var)
@@ -35,14 +33,12 @@ module SmartSettings
       end
 
       def all
-        if setting_names.empty?
-          files = Dir.glob(Rails.root.join('app', 'settings', '*.rb'))
-          files = files.map { |file| file.to_s.split('/').last.sub('_settings.rb', '') }
+        return new.all if setting_names.any?
 
-          where(var: files)
-        else
-          new.all
-        end
+        files = Dir.glob(Rails.root.join('app', 'settings', '*.rb'))
+        files = files.map { |file| file.to_s.split('/').last.sub('_settings.rb', '') }
+
+        where(var: files)
       end
 
       def method_missing(method, *args, &block)

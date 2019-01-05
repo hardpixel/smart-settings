@@ -18,10 +18,10 @@ module SmartSettings
         attribute sname, type_cast, options
         self.setting_names += [sname]
 
-        unless gname.nil?
-          group = setting_groups.fetch(gname, []) + [sname]
-          self.setting_groups = setting_groups.merge(gname => group)
-        end
+        return if gname.nil?
+
+        group = setting_groups.fetch(gname, []) + [sname]
+        self.setting_groups = setting_groups.merge(gname => group)
       end
 
       def method_missing(method, *args, &block)
@@ -42,12 +42,12 @@ module SmartSettings
     end
 
     def group(name)
-      if group_exists?(name)
-        keys = setting_groups[name]
-        data = attributes.symbolize_keys.select { |k, _v| k.in? keys }
+      return unless group_exists?(name)
 
-        Hash[data.map { |k, v| [k.to_s.sub("#{name}_", '').to_sym, v] }]
-      end
+      keys = setting_groups[name]
+      data = attributes.symbolize_keys.select { |k, _v| k.in? keys }
+
+      Hash[data.map { |k, v| [k.to_s.sub("#{name}_", '').to_sym, v] }]
     end
 
     def method_missing(method, *args, &block)

@@ -17,10 +17,10 @@ module SmartSettings
       end
 
       before_save do
-        unless @_suspend_save_callbacks
-          changes_to_save.each do |var, value|
-            create_or_update_setting(var, value.last)
-          end
+        return if @_suspend_save_callbacks
+
+        changes_to_save.each do |var, value|
+          create_or_update_setting(var, value.last)
         end
       end
 
@@ -30,10 +30,10 @@ module SmartSettings
     end
 
     def settings
-      if settings_table_exists?
-        valid = self.attribute_names.reject { |i| i == 'var' }
-        Setting.where(settable_type: self.class.name, settable_id: id, var: valid)
-      end
+      return unless settings_table_exists?
+
+      valid = self.attribute_names.reject { |i| i == 'var' }
+      Setting.where(settable_type: self.class.name, settable_id: id, var: valid)
     end
 
     private
