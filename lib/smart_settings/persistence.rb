@@ -38,29 +38,29 @@ module SmartSettings
 
     private
 
-      def cast_setting_value(var, value)
-        self.class.attribute_types[var].cast(value)
-      end
+    def cast_setting_value(var, value)
+      self.class.attribute_types[var].cast(value)
+    end
 
-      def create_setting(var, value)
-        parameters = { var: var, value: cast_setting_value(var, value) }
-        Setting.create(parameters.merge(settable_type: self.class.name, settable_id: id))
-      end
+    def create_setting(var, value)
+      parameters = { var: var, value: cast_setting_value(var, value) }
+      Setting.create(parameters.merge(settable_type: self.class.name, settable_id: id))
+    end
 
-      def update_setting(var, value)
-        settings.where(var: var).update(value: cast_setting_value(var, value))
-      end
+    def update_setting(var, value)
+      settings.where(var: var).update(value: cast_setting_value(var, value))
+    end
 
-      def create_or_update_setting(var, value)
-        if settings.where(var: var).exists?
-          update_setting(var, value)
-        else
-          create_setting(var, value)
-        end
+    def create_or_update_setting(var, value)
+      if settings.where(var: var).exists?
+        update_setting(var, value)
+      else
+        create_setting(var, value)
       end
+    end
 
-      def settings_table_exists?
-        ActiveRecord::Base.connection.table_exists? Setting.table_name
-      end
+    def settings_table_exists?
+      ActiveRecord::Base.connection.table_exists? Setting.table_name
+    end
   end
 end

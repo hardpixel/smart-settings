@@ -14,29 +14,29 @@ module SmartSettings
 
     private
 
-      def setting_class
-        name.camelize
+    def setting_class
+      name.camelize
+    end
+
+    def setting_file
+      "#{name.downcase.underscore}_settings"
+    end
+
+    def setting_fields
+      args.map do |arg|
+        field, cast_type, default, group = arg.split(':')
+
+        items  = [":#{field.to_sym}", ":#{cast_type.to_sym}"]
+        items << ["default: #{value_type_cast(cast_type.to_sym, default)}"] if default.present?
+        items << ["group: :#{group.to_sym}"] if group.present?
+
+        items.join(', ')
       end
+    end
 
-      def setting_file
-        "#{name.downcase.underscore}_settings"
-      end
-
-      def setting_fields
-        args.map do |arg|
-          field, cast_type, default, group = arg.split(':')
-
-          items  = [":#{field.to_sym}", ":#{cast_type.to_sym}"]
-          items << ["default: #{value_type_cast(cast_type.to_sym, default)}"] if default.present?
-          items << ["group: :#{group.to_sym}"] if group.present?
-
-          items.join(', ')
-        end
-      end
-
-      def value_type_cast(cast_type, value)
-        strings = [:string, :date, :datetime, :time]
-        cast_type.in?(strings) ? "'#{value}'" : value
-      end
+    def value_type_cast(cast_type, value)
+      strings = [:string, :date, :datetime, :time]
+      cast_type.in?(strings) ? "'#{value}'" : value
+    end
   end
 end

@@ -52,12 +52,12 @@ module SmartSettings
 
       private
 
-        def raise_record_not_found_exception!(ids)
-          vars  = ids.is_a?(Array) ? "(#{ids.join(', ')})" : ids
-          error = "Couldn't find Settings with var: #{vars}"
+      def raise_record_not_found_exception!(ids)
+        vars  = ids.is_a?(Array) ? "(#{ids.join(', ')})" : ids
+        error = "Couldn't find Settings with var: #{vars}"
 
-          raise ActiveRecord::RecordNotFound.new(error, 'Settings', 'var')
-        end
+        raise ActiveRecord::RecordNotFound.new(error, 'Settings', 'var')
+      end
     end
   end
 end
